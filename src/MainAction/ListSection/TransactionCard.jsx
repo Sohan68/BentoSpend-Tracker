@@ -1,9 +1,15 @@
+import { getCategoryColor } from "../../getInitialCard";
+
 const TransactionCard = ({ card }) => {
+  const color = getCategoryColor();
+  const styles = color[card.category] || color.default;
   return (
     <>
       <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#111827]/10 shadow-xs hover:shadow-md hover:border-[#80A1C1]/50 transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
         <div className="flex items-start sm:items-center gap-3.5 flex-1 min-w-0">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-xl shrink-0">
+          <div
+            className={` ${styles.borderColor} w-12 h-12 rounded-2xl border flex items-center justify-center text-xl shrink-0`}
+          >
             {card.icon}
           </div>
           <div className="min-w-0 flex-1">
@@ -11,7 +17,9 @@ const TransactionCard = ({ card }) => {
               <h4 className="text-sm sm:text-base font-bold text-[#111827] truncate">
                 {card.title}
               </h4>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-[#16A34A] border border-emerald-200">
+              <span
+                className={`${styles.bgColor} inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border`}
+              >
                 {card.category}
               </span>
             </div>
