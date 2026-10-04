@@ -1,7 +1,18 @@
+import { useContext } from "react";
 import bentoLogo from "./assets/logo.svg";
+import { ShowModalContext } from "./Contex/TransactionContex";
+import ExpencessModal from "./Modal/ExpencessModal";
+
 const Header = () => {
+  const { showModal, setShowModal } = useContext(ShowModalContext);
+
+  const handleAddTransaction = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+  };
   return (
     <>
+      {showModal && <ExpencessModal />}
       <header className="sticky top-0 z-30 bg-[#FFF5E6]/90 backdrop-blur-md border-b border-[#111827]/10 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -74,7 +85,8 @@ const Header = () => {
           <div className="flex items-center gap-3">
             <a
               href="modal.html"
-              id="openAddModalBtn"
+              // id="openAddModalBtn"
+              onClick={(e) => handleAddTransaction(e)}
               className="flex items-center gap-2 bg-[#FAD4C0] hover:bg-[#f5c0a7] active:scale-[0.98] text-[#111827] px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-sm border border-[#111827]/10 cursor-pointer"
             >
               <svg

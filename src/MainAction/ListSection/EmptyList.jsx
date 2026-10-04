@@ -1,3 +1,5 @@
+import emptyIcon from "../../assets/empty-state.svg";
+
 const EmptyList = () => {
   return (
     <>
@@ -6,7 +8,7 @@ const EmptyList = () => {
         className="bg-white rounded-3xl p-12 text-center border border-dashed border-[#111827]/20"
       >
         <img
-          src="assets/empty-state.svg"
+          src={emptyIcon}
           alt="Empty state"
           className="w-32 h-32 mx-auto mb-4"
         />

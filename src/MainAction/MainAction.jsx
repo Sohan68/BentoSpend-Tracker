@@ -1,6 +1,6 @@
 import CategoryOverview from "./CategoryOverview";
 import Controller from "./Controller";
-import ListSection from "./ListSection/CardList";
+import TrasactionList from "./ListSection/TrasactionList";
 import Summary from "./Summary";
 
 const MainAction = () => {
@@ -10,7 +10,7 @@ const MainAction = () => {
         <Summary></Summary>
         <CategoryOverview></CategoryOverview>
         <Controller></Controller>
-        <ListSection></ListSection>
+        <TrasactionList></TrasactionList>
       </main>
     </>
   );

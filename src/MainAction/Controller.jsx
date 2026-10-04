@@ -76,6 +76,12 @@ const Controller = () => {
             🛍️ Shopping
           </button>
           <button
+            data-category="Education"
+            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
+          >
+            📚 Education
+          </button>
+          <button
             data-category="Other"
             className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
           >

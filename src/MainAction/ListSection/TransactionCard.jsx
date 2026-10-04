@@ -1,8 +1,9 @@
 import { getCategoryColor } from "../../getInitialCard";
 
-const TransactionCard = ({ card }) => {
+const TransactionCard = ({ card, onDelete }) => {
   const color = getCategoryColor();
   const styles = color[card.category] || color.default;
+
   return (
     <>
       <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#111827]/10 shadow-xs hover:shadow-md hover:border-[#80A1C1]/50 transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
@@ -51,7 +52,7 @@ const TransactionCard = ({ card }) => {
         <div className="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#111827]/5">
           <div className="text-left sm:text-right">
             <span className="text-base sm:text-lg font-bold font-mono text-[#111827] tracking-tight">
-              ${card.amount}
+              {card.amount}
             </span>
           </div>
 
@@ -79,6 +80,7 @@ const TransactionCard = ({ card }) => {
             <button
               title="Delete Expense"
               className="p-2 rounded-xl bg-[#FFF5E6] hover:bg-[#DC2626]/15 hover:text-[#DC2626] text-[#111827] border border-[#111827]/10 transition-colors cursor-pointer"
+              onClick={() => onDelete(card.id)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
