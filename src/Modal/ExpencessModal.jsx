@@ -1,22 +1,45 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   ShowModalContext,
   TransactionContext,
 } from "../Contex/TransactionContex";
 
-const categoryIcons = {
-  Food: "🍱",
-  Rent: "🏠",
-  Entertainment: "🎬",
-  Medical: "💊",
-  Utilities: "⚡",
-  Shopping: "🛍️",
-  Education: "📚",
-  Other: "✨",
-};
+// const categoryIcons = {
+//   Food: "🍱",
+//   Rent: "🏠",
+//   Entertainment: "🎬",
+//   Medical: "💊",
+//   Utilities: "⚡",
+//   Shopping: "🛍️",
+//   Education: "📚",
+//   Other: "✨",
+// };
 const ExpencessModal = () => {
   const { setShowModal } = useContext(ShowModalContext);
   const { transactions, setTransactions } = useContext(TransactionContext);
+  const initialExpenceData = {
+    id: crypto.randomUUID(),
+    title: "",
+    amount: "",
+    category: "",
+    date: "",
+    description: "",
+  };
+  const [expenseData, setExpenseData] = useState(initialExpenceData);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setExpenseData({
+      ...expenseData,
+      [name]: value,
+    });
+  };
+  const handleExpenceSave = (e) => {
+    e.preventDefault();
+    setTransactions([expenseData], ...transactions);
+    setShowModal(false);
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -112,12 +135,12 @@ const ExpencessModal = () => {
               </label>
               <input
                 type="text"
-                id="Title"
+                id="title"
                 placeholder="e.g. Grocery shopping, House rent, Electricity bill"
                 className="w-full px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
                 required
                 name="title"
-                value={transactions.title}
+                value={expenseData.title}
                 onChange={handleChange}
               />
             </div>
@@ -142,8 +165,8 @@ const ExpencessModal = () => {
                     placeholder="0.00"
                     className="w-full pl-8 pr-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm font-mono text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
                     required
-                    name="number"
-                    value={transactions.number}
+                    name="amount"
+                    value={expenseData.number}
                     onChange={handleChange}
                   />
                 </div>
@@ -162,10 +185,10 @@ const ExpencessModal = () => {
                     className="w-full appearance-none px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all cursor-pointer"
                     required
                     name="category"
-                    value={transactions.category}
+                    value={expenseData.category}
                     onChange={handleChange}
                   >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                       Select category
                     </option>
                     <option value="Food">🍱 Food</option>
@@ -209,7 +232,7 @@ const ExpencessModal = () => {
                 className="w-full px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
                 required
                 name="date"
-                value={transactions.date}
+                value={expenseData.date}
                 onChange={handleChange}
               />
             </div>
@@ -226,7 +249,7 @@ const ExpencessModal = () => {
               </label>
               <textarea
                 name="description"
-                value={transactions.description}
+                value={expenseData.description}
                 onChange={handleChange}
                 id="expenseNote"
                 rows="2"
@@ -247,7 +270,7 @@ const ExpencessModal = () => {
               <button
                 type="submit"
                 id="submitExpenseBtn"
-                onClick={handleSave}
+                onClick={(e) => handleExpenceSave(e)}
                 className="px-6 py-2.5 rounded-xl text-sm font-semibold text-[#111827] bg-[#FAD4C0] hover:bg-[#f5c0a7] active:scale-[0.98] transition-all shadow-sm border border-[#111827]/10 cursor-pointer"
               >
                 Save Expense
