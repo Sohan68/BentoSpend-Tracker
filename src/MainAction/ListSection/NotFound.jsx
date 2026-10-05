@@ -2,7 +2,13 @@ import { useContext } from "react";
 import NotFoundIcon from "../../assets/not-found.svg";
 import { TransactionContext } from "../../Contex/TransactionContex";
 const NotFound = () => {
-  const { setSearchTransaction } = useContext(TransactionContext);
+  const { setSearchTransaction, setActiveCategory, setSortOrder } =
+    useContext(TransactionContext);
+  const handleClear = () => {
+    setSearchTransaction("");
+    setActiveCategory("All");
+    setSortOrder("date-desc");
+  };
   return (
     <>
       <div
@@ -22,7 +28,7 @@ const NotFound = () => {
           No expense transactions matched your search query or filter criteria.
         </p>
         <button
-          onClick={() => setSearchTransaction("")}
+          onClick={handleClear}
           id="clearSearchFilterBtn"
           className="inline-flex items-center gap-2 bg-[#FFF5E6] hover:bg-[#FAD4C0] text-[#111827] border border-[#111827]/15 px-4 py-2 rounded-xl font-semibold text-xs transition-all cursor-pointer"
         >

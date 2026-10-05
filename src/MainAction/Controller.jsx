@@ -14,7 +14,6 @@ const Controller = () => {
 
   const categorys = getCategorys();
   const handleReset = () => {
-    setSearchTransaction("");
     setActiveCategory("All");
     setSortOrder("date-desc");
   };
