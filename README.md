@@ -1,4 +1,5 @@
 Download: [BentoSpend_Tracker_README.md](https://github.com/user-attachments/files/33064171/BentoSpend_Tracker_README.md)
+
 # BentoSpend Tracker
 
 [![React](https://img.shields.io/badge/React-19+-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -146,34 +147,41 @@ BentoSpend Tracker/
 
 ### Main Directory Responsibilities
 
-| Directory / File | Purpose |
-|---|---|
-| `public/` | Static public assets |
-| `src/` | Main React source code |
-| `src/assets/` | Project assets |
-| `Contex/` | Shared transaction context |
-| `MainAction/` | Main transaction-related interface |
-| `ListSection/` | Transaction list and empty/not-found states |
-| `Modal/` | Expense modal interface |
-| `TransactionReducer/` | Transaction state reducer |
-| `BentoSpend.jsx` | Main BentoSpend application component |
-| `Header.jsx` | Application header |
-| `Footer.jsx` | Application footer |
-| `getInitialCard.js` | Initial card/data-related helper |
-| `main.jsx` | React application entry point |
-| `index.css` | Global styling |
-| `eslint.config.js` | ESLint configuration |
-| `vite.config.js` | Vite configuration |
+| Directory / File      | Purpose                                     |
+| --------------------- | ------------------------------------------- |
+| `public/`             | Static public assets                        |
+| `src/`                | Main React source code                      |
+| `src/assets/`         | Project assets                              |
+| `Contex/`             | Shared transaction context                  |
+| `MainAction/`         | Main transaction-related interface          |
+| `ListSection/`        | Transaction list and empty/not-found states |
+| `Modal/`              | Expense modal interface                     |
+| `TransactionReducer/` | Transaction state reducer                   |
+| `BentoSpend.jsx`      | Main BentoSpend application component       |
+| `Header.jsx`          | Application header                          |
+| `Footer.jsx`          | Application footer                          |
+| `getInitialCard.js`   | Initial card/data-related helper            |
+| `main.jsx`            | React application entry point               |
+| `index.css`           | Global styling                              |
+| `eslint.config.js`    | ESLint configuration                        |
+| `vite.config.js`      | Vite configuration                          |
 
 ---
 
 ## 🖼️ Preview / Demo
 
+![BentoSpend Tracker Preview](./src/assets/one.png)
+![BentoSpend Tracker Preview](./src/assets/two.png)
+![BentoSpend Tracker Preview](./src/assets/three.png)
+![BentoSpend Tracker Preview](./src/assets/four.png)
+![BentoSpend Tracker Preview](./src/assets/five.png)
+![BentoSpend Tracker Preview](./src/assets/six.png)
+
 ### Live Demo
 
-Add your deployed Vercel URL here:
+deployed Vercel URL here:
 
-**Live Demo:** `https://your-project.vercel.app`
+**Live Demo:** `https://bento-spend-tracker.vercel.app/`
 
 ### Project Screenshot
 
@@ -186,7 +194,7 @@ docs/screenshots/bentospend-tracker.png
 Then display it here:
 
 ```md
-![BentoSpend Tracker Preview](docs/screenshots/bentospend-tracker.png)
+![BentoSpend Tracker Preview](./src/assets/one.png)
 ```
 
 > If the screenshot file does not exist yet, add it to the path above or remove the image reference.
@@ -217,18 +225,18 @@ Then display it here:
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| **React** | UI development |
-| **Vite** | Development server and build tool |
-| **JavaScript / JSX** | Application logic and components |
-| **CSS** | Styling |
-| **React Context** | Shared transaction state |
-| **Reducer Pattern** | Transaction state management |
-| **ESLint** | Code quality and linting |
-| **Git** | Version control |
-| **GitHub** | Source-code hosting |
-| **Vercel** | Deployment |
+| Technology           | Purpose                           |
+| -------------------- | --------------------------------- |
+| **React**            | UI development                    |
+| **Vite**             | Development server and build tool |
+| **JavaScript / JSX** | Application logic and components  |
+| **CSS**              | Styling                           |
+| **React Context**    | Shared transaction state          |
+| **Reducer Pattern**  | Transaction state management      |
+| **ESLint**           | Code quality and linting          |
+| **Git**              | Version control                   |
+| **GitHub**           | Source-code hosting               |
+| **Vercel**           | Deployment                        |
 
 ---
 
@@ -329,13 +337,13 @@ This project is suitable for deployment on **Vercel**.
 
 ### Vercel Settings
 
-| Setting | Value |
-|---|---|
-| Framework Preset | Vite |
-| Build Command | `npm run build` |
-| Output Directory | `dist` |
-| Install Command | `npm install` |
-| Environment Variables | None |
+| Setting               | Value           |
+| --------------------- | --------------- |
+| Framework Preset      | Vite            |
+| Build Command         | `npm run build` |
+| Output Directory      | `dist`          |
+| Install Command       | `npm install`   |
+| Environment Variables | None            |
 
 ### Deploy Steps
 
@@ -364,13 +372,13 @@ Vercel will automatically build and deploy the application.
 
 ## 🔧 Available Scripts
 
-| Command | Description |
-|---|---|
-| `npm install` | Install dependencies |
-| `npm run dev` | Start the development server |
-| `npm run build` | Create the production build |
+| Command           | Description                  |
+| ----------------- | ---------------------------- |
+| `npm install`     | Install dependencies         |
+| `npm run dev`     | Start the development server |
+| `npm run build`   | Create the production build  |
 | `npm run preview` | Preview the production build |
-| `npm run lint` | Run ESLint |
+| `npm run lint`    | Run ESLint                   |
 
 ---
 
