@@ -10,8 +10,14 @@ import NotFound from "./NotFound";
 import TransactionCard from "./TransactionCard";
 
 const TrasactionList = () => {
-  const { transactions, setTransactions, setUpdateExpence, searchTransaction } =
-    useContext(TransactionContext);
+  const {
+    transactions,
+    setTransactions,
+    setUpdateExpence,
+    searchTransaction,
+    activeCategory,
+    sortOrder,
+  } = useContext(TransactionContext);
 
   const { setShowModal } = useContext(ShowModalContext);
   const totalItem = transactions.length;
@@ -19,9 +25,27 @@ const TrasactionList = () => {
     setShowModal(true);
     setUpdateExpence(card);
   };
-  const searchFilterdTransaction = transactions.filter((item) =>
-    item.title.toLowerCase().includes(searchTransaction.toLowerCase()),
-  );
+  const processedTransactions = transactions.filter((item) => {
+    const matcheSearch = item.title
+      .toLowerCase()
+      .includes(searchTransaction.toLowerCase());
+    const matcheFiltered =
+      activeCategory === "All" || item.category === activeCategory;
+    return matcheSearch && matcheFiltered;
+  });
+  processedTransactions.sort((a, b) => {
+    const getAmount = (amountStr) =>
+      parseFloat(String(amountStr).replace(/[^0-9.-]+/g, ""));
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    if (sortOrder === "date-desc") return dateB - dateA;
+    if (sortOrder === "date-asc") return dateA - dateB;
+    if (sortOrder === "amount-desc")
+      return getAmount(b.amount) - getAmount(a.amount);
+    if (sortOrder === "amount-asc")
+      return getAmount(a.amount) - getAmount(b.amount);
+    return 0;
+  });
 
   const handleDeleteCard = (itemId, cardTitle) => {
     const filterdCard = transactions.filter((item) => item.id !== itemId);
@@ -51,11 +75,11 @@ const TrasactionList = () => {
         {/* Transactions Section */}
         {transactions.length === 0 ? (
           <EmptyList />
-        ) : searchFilterdTransaction.length === 0 ? (
+        ) : processedTransactions.length === 0 ? (
           <NotFound />
         ) : (
           <div className="space-y-3">
-            {searchFilterdTransaction.map((card) => (
+            {processedTransactions.map((card) => (
               <TransactionCard
                 key={card.id}
                 card={card}

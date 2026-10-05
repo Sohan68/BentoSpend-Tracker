@@ -88,10 +88,24 @@ const categoryStyles = {
     bgColor: "bg-slate-100 text-slate-700 border-slate-300",
   },
 };
+const categories = [
+  { id: "All", label: "All Categories" },
+  { id: "Food", label: "🍱 Food" },
+  { id: "Rent", label: "🏠 Rent" },
+  { id: "Entertainment", label: "🎬 Entertainment" },
+  { id: "Medical", label: "💊 Medical" },
+  { id: "Utilities", label: "⚡ Utilities" },
+  { id: "Shopping", label: "🛍️ Shopping" },
+  { id: "Education", label: "📚 Education" },
+  { id: "Other", label: "✨ Other" },
+];
 function getAllCard() {
   return expenses;
 }
 function getCategoryColor() {
   return categoryStyles;
 }
-export { getAllCard, getCategoryColor };
+function getCategorys() {
+  return categories;
+}
+export { getAllCard, getCategoryColor, getCategorys };

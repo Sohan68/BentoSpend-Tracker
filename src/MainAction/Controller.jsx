@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { TransactionContext } from "../Contex/TransactionContex";
+import { getCategorys } from "../getInitialCard";
 
 const Controller = () => {
   const {
@@ -10,6 +11,13 @@ const Controller = () => {
     sortOrder,
     setSortOrder,
   } = useContext(TransactionContext);
+
+  const categorys = getCategorys();
+  const handleReset = () => {
+    setSearchTransaction("");
+    setActiveCategory("All");
+    setSortOrder("date-desc");
+  };
   return (
     <section className="bg-white rounded-3xl p-5 sm:p-6 border border-[#111827]/10 shadow-sm space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -45,60 +53,20 @@ const Controller = () => {
           className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none"
           id="categoryFilterContainer"
         >
-          <button
-            data-category="All"
-            className="filter-pill active px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#111827] text-white transition-all cursor-pointer shadow-sm"
-          >
-            All Categories
-          </button>
-          <button
-            data-category="Food"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            🍱 Food
-          </button>
-          <button
-            data-category="Rent"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            🏠 Rent
-          </button>
-          <button
-            data-category="Entertainment"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            🎬 Entertainment
-          </button>
-          <button
-            data-category="Medical"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            💊 Medical
-          </button>
-          <button
-            data-category="Utilities"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            ⚡ Utilities
-          </button>
-          <button
-            data-category="Shopping"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            🛍️ Shopping
-          </button>
-          <button
-            data-category="Education"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            📚 Education
-          </button>
-          <button
-            data-category="Other"
-            className="filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] transition-all cursor-pointer border border-[#111827]/10"
-          >
-            ✨ Other
-          </button>
+          {categorys.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveCategory(category.id)}
+              className={`filter-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shadow-sm border 
+                ${
+                  activeCategory === category.id
+                    ? "bg-[#111827] text-white border-transparent"
+                    : "bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] border-[#111827]/10"
+                }`}
+            >
+              {category.label}
+            </button>
+          ))}
         </div>
 
         <div className="flex items-center gap-3 self-end lg:self-auto">
@@ -107,6 +75,8 @@ const Controller = () => {
             <div className="relative">
               <select
                 id="sortBySelect"
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
                 className="appearance-none bg-[#FFF5E6] border border-[#111827]/15 text-[#111827] text-xs font-semibold rounded-xl pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-[#80A1C1] cursor-pointer"
               >
                 <option value="date-desc">Date: Newest First</option>
@@ -134,6 +104,7 @@ const Controller = () => {
 
           <button
             id="resetFiltersBtn"
+            onClick={handleReset}
             title="Reset filters and sorting"
             className="p-2 rounded-xl bg-[#FFF5E6] hover:bg-[#FAD4C0]/50 text-[#111827] border border-[#111827]/10 transition-all cursor-pointer"
           >
