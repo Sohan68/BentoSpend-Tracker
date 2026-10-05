@@ -499,8 +499,11 @@ The project structure and UI may continue to evolve as new components, features,
 
 ---
 
-## ⭐ Support
+⭐ Support: https://www.linkedin.com/in/sohantalukder68/
 
+👨‍💻 Author:
+Dev Sohan
+GitHub: https://github.com/Sohan68/
 If you find this project useful, consider giving the repository a ⭐ on GitHub.
 
 ---
