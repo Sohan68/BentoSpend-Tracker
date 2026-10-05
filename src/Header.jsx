@@ -1,15 +1,22 @@
 import { useContext } from "react";
 import bentoLogo from "./assets/logo.svg";
-import { ShowModalContext } from "./Contex/TransactionContex";
+import {
+  ShowModalContext,
+  TransactionContext,
+} from "./Contex/TransactionContex";
 import ExpencessModal from "./Modal/ExpencessModal";
 
 const Header = () => {
   const { showModal, setShowModal } = useContext(ShowModalContext);
+  const { searchTransaction, setSearchTransaction, setUpdateExpence } =
+    useContext(TransactionContext);
 
   const handleAddTransaction = (e) => {
     e.preventDefault();
     setShowModal(true);
+    setUpdateExpence(null);
   };
+
   return (
     <>
       {showModal && <ExpencessModal />}
@@ -40,9 +47,11 @@ const Header = () => {
             <div className="relative w-full">
               <input
                 type="text"
-                id="headerSearchInput"
                 placeholder="Search expenses by title..."
                 className="w-full pl-10 pr-10 py-2.5 bg-white border border-[#111827]/15 rounded-xl text-sm text-[#111827] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:border-transparent transition-all shadow-sm"
+                name="search"
+                value={searchTransaction}
+                onChange={(e) => setSearchTransaction(e.target.value)}
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#6B7280]">
                 <svg
@@ -60,32 +69,32 @@ const Header = () => {
                   />
                 </svg>
               </div>
-              <button
-                id="clearHeaderSearch"
-                className="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-[#6B7280] hover:text-[#111827]"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {searchTransaction && (
+                <button
+                  onClick={() => setSearchTransaction("")}
+                  className=" absolute inset-y-0 right-0 pr-3 flex items-center text-[#6B7280] hover:text-[#111827]"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <a
-              href="modal.html"
-              // id="openAddModalBtn"
               onClick={(e) => handleAddTransaction(e)}
               className="flex items-center gap-2 bg-[#FAD4C0] hover:bg-[#f5c0a7] active:scale-[0.98] text-[#111827] px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-sm border border-[#111827]/10 cursor-pointer"
             >

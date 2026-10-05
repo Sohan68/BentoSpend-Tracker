@@ -1,4 +1,15 @@
+import { useContext } from "react";
+import { TransactionContext } from "../Contex/TransactionContex";
+
 const Controller = () => {
+  const {
+    searchTransaction,
+    setSearchTransaction,
+    activeCategory,
+    setActiveCategory,
+    sortOrder,
+    setSortOrder,
+  } = useContext(TransactionContext);
   return (
     <section className="bg-white rounded-3xl p-5 sm:p-6 border border-[#111827]/10 shadow-sm space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -6,7 +17,8 @@ const Controller = () => {
           <div className="relative">
             <input
               type="text"
-              id="mobileSearchInput"
+              value={searchTransaction || ""}
+              onChange={(e) => setSearchTransaction(e.target.value)}
               placeholder="Search expenses by title..."
               className="w-full pl-10 pr-10 py-2 bg-[#FFF5E6]/60 border border-[#111827]/15 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#80A1C1]"
             />

@@ -1,6 +1,6 @@
 import { getCategoryColor } from "../../getInitialCard";
 
-const TransactionCard = ({ card, onDelete }) => {
+const TransactionCard = ({ card, onDelete, onEdit }) => {
   const color = getCategoryColor();
   const styles = color[card.category] || color.default;
 
@@ -60,6 +60,7 @@ const TransactionCard = ({ card, onDelete }) => {
             <button
               title="Edit Expense"
               className="p-2 rounded-xl bg-[#FFF5E6] hover:bg-[#FAD4C0] text-[#111827] border border-[#111827]/10 transition-colors cursor-pointer"
+              onClick={() => onEdit(card)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +81,7 @@ const TransactionCard = ({ card, onDelete }) => {
             <button
               title="Delete Expense"
               className="p-2 rounded-xl bg-[#FFF5E6] hover:bg-[#DC2626]/15 hover:text-[#DC2626] text-[#111827] border border-[#111827]/10 transition-colors cursor-pointer"
-              onClick={() => onDelete(card.id)}
+              onClick={() => onDelete(card.id, card.title)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

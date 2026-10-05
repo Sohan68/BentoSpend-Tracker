@@ -1,6 +1,18 @@
+import { useContext } from "react";
 import emptyIcon from "../../assets/empty-state.svg";
+import {
+  ShowModalContext,
+  TransactionContext,
+} from "../../Contex/TransactionContex";
 
 const EmptyList = () => {
+  const { setShowModal } = useContext(ShowModalContext);
+  const { setUpdateExpence } = useContext(TransactionContext);
+  const handleAddTransaction = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+    setUpdateExpence(null);
+  };
   return (
     <>
       <div
@@ -18,7 +30,7 @@ const EmptyList = () => {
           by recording your first expense.
         </p>
         <a
-          href="modal.html"
+          onClick={(e) => handleAddTransaction(e)}
           className="inline-flex items-center gap-2 bg-[#FAD4C0] hover:bg-[#f5c0a7] text-[#111827] px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm cursor-pointer"
         >
           <svg

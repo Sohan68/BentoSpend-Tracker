@@ -1,4 +1,8 @@
+import { useContext } from "react";
+import NotFoundIcon from "../../assets/not-found.svg";
+import { TransactionContext } from "../../Contex/TransactionContex";
 const NotFound = () => {
+  const { setSearchTransaction } = useContext(TransactionContext);
   return (
     <>
       <div
@@ -6,7 +10,7 @@ const NotFound = () => {
         className=" bg-white rounded-3xl p-12 text-center border border-[#111827]/10"
       >
         <img
-          src="assets/not-found.svg"
+          src={NotFoundIcon}
           alt="Not found"
           className="w-32 h-32 mx-auto mb-4"
         />
@@ -18,6 +22,7 @@ const NotFound = () => {
           No expense transactions matched your search query or filter criteria.
         </p>
         <button
+          onClick={() => setSearchTransaction("")}
           id="clearSearchFilterBtn"
           className="inline-flex items-center gap-2 bg-[#FFF5E6] hover:bg-[#FAD4C0] text-[#111827] border border-[#111827]/15 px-4 py-2 rounded-xl font-semibold text-xs transition-all cursor-pointer"
         >

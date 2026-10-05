@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 import {
   ShowModalContext,
   TransactionContext,
@@ -11,14 +12,32 @@ import { getAllCard } from "./getInitialCard";
 function BentoSpend() {
   const [transactions, setTransactions] = useState(getAllCard);
   const [showModal, setShowModal] = useState(false);
+  const [updateExpence, setUpdateExpence] = useState(null);
+  const [searchTransaction, setSearchTransaction] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState("date-desc");
 
   return (
     <>
-      <TransactionContext.Provider value={{ transactions, setTransactions }}>
+      <TransactionContext.Provider
+        value={{
+          transactions,
+          setTransactions,
+          updateExpence,
+          setUpdateExpence,
+          searchTransaction,
+          setSearchTransaction,
+          activeCategory,
+          setActiveCategory,
+          sortOrder,
+          setSortOrder,
+        }}
+      >
         <ShowModalContext.Provider value={{ showModal, setShowModal }}>
           <Header />
           <MainAction />
           <Footer />
+          <ToastContainer autoClose={3000} />
         </ShowModalContext.Provider>
       </TransactionContext.Provider>
     </>

@@ -1,15 +1,34 @@
 import { useContext } from "react";
-import { TransactionContext } from "../../Contex/TransactionContex";
+import { toast } from "react-toastify";
+import {
+  ShowModalContext,
+  TransactionContext,
+} from "../../Contex/TransactionContex";
 import EmptyList from "./EmptyList";
+import NotFound from "./NotFound";
+
 import TransactionCard from "./TransactionCard";
 
 const TrasactionList = () => {
-  const { transactions, setTransactions } = useContext(TransactionContext);
+  const { transactions, setTransactions, setUpdateExpence, searchTransaction } =
+    useContext(TransactionContext);
 
-  const handleDeleteCard = (itemId) => {
+  const { setShowModal } = useContext(ShowModalContext);
+  const totalItem = transactions.length;
+  const handleEditCard = (card) => {
+    setShowModal(true);
+    setUpdateExpence(card);
+  };
+  const searchFilterdTransaction = transactions.filter((item) =>
+    item.title.toLowerCase().includes(searchTransaction.toLowerCase()),
+  );
+
+  const handleDeleteCard = (itemId, cardTitle) => {
     const filterdCard = transactions.filter((item) => item.id !== itemId);
     setTransactions(filterdCard);
+    toast.error(`${cardTitle} has been deleted `);
   };
+
   return (
     <>
       <section className="space-y-4">
@@ -22,7 +41,7 @@ const TrasactionList = () => {
               id="activeCountBadge"
               className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#80A1C1]/20 text-[#111827]"
             >
-              6 Records
+              {totalItem} Records
             </span>
           </div>
           <div className="text-xs text-[#6B7280]">
@@ -30,18 +49,21 @@ const TrasactionList = () => {
           </div>
         </div>
         {/* Transactions Section */}
-        {transactions.length > 0 ? (
+        {transactions.length === 0 ? (
+          <EmptyList />
+        ) : searchFilterdTransaction.length === 0 ? (
+          <NotFound />
+        ) : (
           <div className="space-y-3">
-            {transactions.map((card) => (
+            {searchFilterdTransaction.map((card) => (
               <TransactionCard
                 key={card.id}
                 card={card}
                 onDelete={handleDeleteCard}
+                onEdit={handleEditCard}
               ></TransactionCard>
             ))}
           </div>
-        ) : (
-          <EmptyList />
         )}
       </section>
     </>

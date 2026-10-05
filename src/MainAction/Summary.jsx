@@ -1,4 +1,19 @@
+import { useContext } from "react";
+import { TransactionContext } from "../Contex/TransactionContex";
+
 const Summary = () => {
+  const { transactions } = useContext(TransactionContext);
+  const totalItem = transactions.length;
+  const totalExpences = transactions.reduce((acc, curr) => {
+    const numericAmount = parseFloat(
+      String(curr.amount).replace(/[^0-9.-]+/g, ""),
+    );
+    return acc + numericAmount;
+  }, 0);
+  const budgetLimit = 4000;
+  const RemainingExpences = budgetLimit - totalExpences;
+  const spentPercentage = (totalExpences / budgetLimit) * 100;
+  const spentPerceInt = parseInt(spentPercentage);
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
       <div className="bg-white rounded-3xl p-6 border border-[#111827]/10 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
@@ -29,7 +44,7 @@ const Summary = () => {
             className="text-3xl font-extrabold font-mono text-[#111827] tracking-tight"
             id="totalExpenseDisplay"
           >
-            $2,845.00
+            ${totalExpences}
           </div>
         </div>
         <div className="mt-4 pt-3 border-t border-[#111827]/5 flex items-center justify-between text-xs text-[#6B7280]">
@@ -81,7 +96,7 @@ const Summary = () => {
             className="text-3xl font-extrabold font-mono text-[#111827] tracking-tight"
             id="totalEntriesDisplay"
           >
-            6 Items
+            {totalItem} Items
           </div>
         </div>
         <div className="mt-4 pt-3 border-t border-[#111827]/5 flex items-center justify-between text-xs text-[#6B7280]">
@@ -99,7 +114,7 @@ const Summary = () => {
               Monthly Budget Target
             </span>
             <h3 className="text-xl font-bold text-[#111827] mt-0.5">
-              $4,000.00 Limit
+              ${budgetLimit} Limit
             </h3>
           </div>
           <div className="text-right">
@@ -108,20 +123,21 @@ const Summary = () => {
               className="text-lg font-bold font-mono text-[#16A34A]"
               id="budgetRemainingDisplay"
             >
-              $1,155.00
+              ${RemainingExpences}
             </p>
           </div>
         </div>
 
         <div className="my-4">
           <div className="flex items-center justify-between text-xs font-medium text-[#111827] mb-1.5">
-            <span>Spent: 71.1%</span>
+            <span>Spent: {spentPerceInt}%</span>
             <span>Limit: $4,000.00</span>
           </div>
           <div className="w-full bg-white/70 h-3 rounded-full overflow-hidden p-0.5 border border-[#111827]/10">
             <div
               id="budgetProgressBar"
-              className="bg-[#111827] w-[71%] h-full rounded-full transition-all duration-500"
+              className={`bg-[#111827] h-full rounded-full transition-all duration-500`}
+              style={{ width: `${spentPerceInt}%` }}
             ></div>
           </div>
         </div>

@@ -1,31 +1,42 @@
 import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import {
   ShowModalContext,
   TransactionContext,
 } from "../Contex/TransactionContex";
 
-// const categoryIcons = {
-//   Food: "🍱",
-//   Rent: "🏠",
-//   Entertainment: "🎬",
-//   Medical: "💊",
-//   Utilities: "⚡",
-//   Shopping: "🛍️",
-//   Education: "📚",
-//   Other: "✨",
-// };
+const categoryIcons = {
+  Food: "🍱",
+  Rent: "🏠",
+  Entertainment: "🎬",
+  Medical: "💊",
+  Utilities: "⚡",
+  Shopping: "🛍️",
+  Education: "📚",
+  Other: "✨",
+};
 const ExpencessModal = () => {
   const { setShowModal } = useContext(ShowModalContext);
-  const { transactions, setTransactions } = useContext(TransactionContext);
-  const initialExpenceData = {
-    id: crypto.randomUUID(),
-    title: "",
-    amount: "",
-    category: "",
-    date: "",
-    description: "",
+  const { transactions, setTransactions, updateExpence, setUpdateExpence } =
+    useContext(TransactionContext);
+
+  const initialExpenseData = (editData) => {
+    if (!editData) {
+      return { title: "", amount: "", category: "", date: "", description: "" };
+    }
+    const d = new Date(editData.date);
+    const formattedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+    return {
+      ...editData,
+      amount: String(editData.amount).replace(/[^0-9.]/g, ""),
+      date: formattedDate,
+    };
   };
-  const [expenseData, setExpenseData] = useState(initialExpenceData);
+
+  const [expenseData, setExpenseData] = useState(() =>
+    initialExpenseData(updateExpence),
+  );
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -35,14 +46,53 @@ const ExpencessModal = () => {
       [name]: value,
     });
   };
+
   const handleExpenceSave = (e) => {
     e.preventDefault();
-    setTransactions([expenseData], ...transactions);
+    const emptyFields = [];
+    if (!expenseData.title.trim()) emptyFields.push("Expense Title");
+    if (!expenseData.amount) emptyFields.push("Amount");
+    if (!expenseData.category) emptyFields.push("Category");
+    if (!expenseData.date) emptyFields.push("Date");
+    if (emptyFields.length > 0) {
+      toast.error(
+        `Please fill in all required fields: ${emptyFields.join(" , ")}`,
+      );
+      return;
+    }
+    const dateObj = new Date(expenseData.date);
+    const formattedDate = dateObj.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
+    const formattedAmount = parseFloat(expenseData.amount).toFixed(2);
+    const finalExpense = {
+      id: crypto.randomUUID(),
+      icon: categoryIcons[expenseData.category] || "✨",
+      title: expenseData.title,
+      category: expenseData.category,
+      amount: `$${formattedAmount}`,
+      date: formattedDate,
+      description: expenseData.description,
+    };
+
+    if (updateExpence) {
+      const updateTrsnsaction = transactions.map((item) =>
+        item.id === updateExpence.id ? finalExpense : item,
+      );
+      setTransactions(updateTrsnsaction);
+      toast.success("Expense updated successfully!");
+    } else {
+      setTransactions([finalExpense, ...transactions]);
+      toast.success("Expense added successfully!");
+    }
     setShowModal(false);
   };
-
   const handleCloseModal = () => {
     setShowModal(false);
+    setUpdateExpence(null);
   };
   return (
     <>
@@ -67,19 +117,15 @@ const ExpencessModal = () => {
                 </svg>
               </div>
               <div>
-                <h3
-                  className="text-lg font-bold text-[#111827]"
-                  // id="modalTitle"
-                >
-                  Add New Expense
+                <h3 className="text-lg font-bold text-[#111827]">
+                  {updateExpence ? "Edit Expense" : "Add New Expense"}
                 </h3>
-                <p className="text-xs text-[#6B7280]" id="modalSubtitle">
+                <p className="text-xs text-[#6B7280]">
                   Enter details to record this transaction
                 </p>
               </div>
             </div>
             <button
-              id="closeModalBtn"
               className="w-8 h-8 rounded-xl bg-[#FFF5E6] hover:bg-[#FAD4C0] text-[#111827] flex items-center justify-center transition-colors cursor-pointer"
               onClick={handleCloseModal}
             >
@@ -100,31 +146,8 @@ const ExpencessModal = () => {
             </button>
           </div>
 
-          <div
-            id="formValidationError"
-            className="hidden mb-4 p-3 rounded-2xl bg-[#DC2626]/10 border border-[#DC2626]/20 text-[#DC2626] text-xs font-medium flex items-center gap-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-            <span id="formErrorMessage">
-              Please fill in all required fields.
-            </span>
-          </div>
-
-          <form id="expenseForm" className="space-y-4">
-            <input type="hidden" id="editExpenseId" value="" />
+          <form onSubmit={handleExpenceSave} noValidate className="space-y-4">
+            <input type="hidden" value="" />
 
             <div>
               <label
@@ -135,10 +158,8 @@ const ExpencessModal = () => {
               </label>
               <input
                 type="text"
-                id="title"
                 placeholder="e.g. Grocery shopping, House rent, Electricity bill"
                 className="w-full px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
-                required
                 name="title"
                 value={expenseData.title}
                 onChange={handleChange}
@@ -159,14 +180,12 @@ const ExpencessModal = () => {
                   </span>
                   <input
                     type="number"
-                    id="Amount"
                     step="0.01"
                     min="0.01"
                     placeholder="0.00"
                     className="w-full pl-8 pr-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm font-mono text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
-                    required
                     name="amount"
-                    value={expenseData.number}
+                    value={expenseData.amount}
                     onChange={handleChange}
                   />
                 </div>
@@ -181,9 +200,7 @@ const ExpencessModal = () => {
                 </label>
                 <div className="relative">
                   <select
-                    id="category"
                     className="w-full appearance-none px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all cursor-pointer"
-                    required
                     name="category"
                     value={expenseData.category}
                     onChange={handleChange}
@@ -228,9 +245,7 @@ const ExpencessModal = () => {
               </label>
               <input
                 type="date"
-                id="expenseDate"
                 className="w-full px-4 py-2.5 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all"
-                required
                 name="date"
                 value={expenseData.date}
                 onChange={handleChange}
@@ -251,7 +266,6 @@ const ExpencessModal = () => {
                 name="description"
                 value={expenseData.description}
                 onChange={handleChange}
-                id="expenseNote"
                 rows="2"
                 placeholder="Add brief details about this expense..."
                 className="w-full px-4 py-2 bg-[#FFF5E6]/40 border border-[#111827]/15 rounded-xl text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#80A1C1] focus:bg-white transition-all resize-none"
@@ -261,7 +275,6 @@ const ExpencessModal = () => {
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#111827]/10">
               <button
                 type="button"
-                id="cancelModalBtn"
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold text-[#111827] bg-[#FFF5E6] hover:bg-[#FAD4C0]/40 transition-colors cursor-pointer"
                 onClick={handleCloseModal}
               >
@@ -269,11 +282,9 @@ const ExpencessModal = () => {
               </button>
               <button
                 type="submit"
-                id="submitExpenseBtn"
-                onClick={(e) => handleExpenceSave(e)}
                 className="px-6 py-2.5 rounded-xl text-sm font-semibold text-[#111827] bg-[#FAD4C0] hover:bg-[#f5c0a7] active:scale-[0.98] transition-all shadow-sm border border-[#111827]/10 cursor-pointer"
               >
-                Save Expense
+                {updateExpence ? "Update Expense" : "Save Expense"}
               </button>
             </div>
           </form>
